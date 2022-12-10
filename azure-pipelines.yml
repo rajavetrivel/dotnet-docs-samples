@@ -30,6 +30,13 @@ steps:
   inputs:
     targetType: 'inline'
     script: '(Get-Content applications\clouddemo\net4\deployment.yaml) -replace "CLOUDDEMO_IMAGE","gcr.io/$(DockerImageName):$(Build.BuildId)" | Out-File -Encoding ASCII $(build.artifactstagingdirectory)\deployment.yaml'
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.BinariesDirectory)'
+    includeRootFolder: true
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact'
   inputs:
